@@ -14,8 +14,8 @@ import { FcGoogle } from "react-icons/fc";
 import { z } from "zod";
 
 const formSchema = z.object({
-    email: z.string().trim().min(1, "Required").email(),
-    password: z.string(),
+    email: z.string().email("Please enter a valid email address"),
+    password: z.string().min(1, "Required"),
 });
 
 export const SignInCard = () => {
@@ -27,6 +27,10 @@ export const SignInCard = () => {
             password: "",
         },
     })
+
+    const onSubmit = (values:z.infer<typeof formSchema>) =>{
+        console.log({values})
+    }
 
 
     return (
@@ -41,11 +45,11 @@ export const SignInCard = () => {
             </div>
             <CardContent className="p-7">
                 <Field {...form}>
-                    <form className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <Controller
                             name="email"
                             control={form.control}
-                            render={({ field }) => (
+                            render={({ field,fieldState }) => (
                                 <Field>
                                     <Input required
                                         {...field}
@@ -53,7 +57,34 @@ export const SignInCard = () => {
                                         placeholder="Enter your email address"
                                         disabled={false}
                                     />
+                                    {fieldState.error && (
+                                        <FieldError>
+                                            {fieldState.error.message}
+                                        </FieldError>
+                                    )}
                                 </Field>
+
+                            )}
+                        />
+                        <Controller
+                            name="password"
+                            control={form.control}
+                            render={({ field,fieldState }) => (
+                                <Field>
+                                    <Input required
+                                        {...field}
+                                        type="password"
+                                        placeholder="Enter your password"
+                                        disabled={false}
+                                    />
+                                    {fieldState.error && (
+                                        <FieldError>
+                                            {fieldState.error.message}
+                                        </FieldError>
+                                    )}
+                                    
+                                </Field>
+                                
                             )}
                         />
 
