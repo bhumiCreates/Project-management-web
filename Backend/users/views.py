@@ -1,8 +1,10 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from .models import users
+from .serializers import UserSerializer
 
 @api_view(['GET'])
-def get_users(request):
-    all_users = users.objects.all()
-    return Response(list(all_users.values()))
+@permission_classes([IsAuthenticated])
+def get_current_user(request):
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
