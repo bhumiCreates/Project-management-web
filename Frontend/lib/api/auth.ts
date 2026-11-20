@@ -1,4 +1,4 @@
-import { User } from "@/app/types";
+import { Role, User } from "@/app/types";
 import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -29,4 +29,17 @@ export const getCurrentUser = async (): Promise<User | null> => {
     console.error("Error fetching current user:", error);
     return null;
   }
+};
+
+export const checkUserPermission = (
+  user : User,
+  requiredRole:Role
+) : boolean =>{
+  const roleHierarchy = {
+    [Role.GUEST]:0,
+    [Role.USER]:1,
+    [Role.MANAGER]:2,
+    [Role.ADMIN]:3,
+  };
+  return roleHierarchy[user.role] >= roleHierarchy[requiredRole];
 };
