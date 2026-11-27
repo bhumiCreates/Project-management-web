@@ -3,8 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import StoreProvider from "@/lib/store/provider";
-
+import { QueryProvider } from "@/components/query-provider";
 const inter = Inter({subsets:['latin']});
 
 export const metadata: Metadata = {
@@ -26,9 +25,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             enableSystem
             disableTransitionOnChange
           >
-            <StoreProvider>
+            <QueryProvider>
               {children}
-            </StoreProvider>
+            </QueryProvider>
           </ThemeProvider>
       </body>
     </html>
